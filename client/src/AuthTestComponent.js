@@ -6,6 +6,10 @@ const API_BASE_URL = 'http://localhost:3001/auth';
 const AuthTestComponent = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [originalUrl, setOriginalUrl] = useState('');
+  const [shortUrl, setShortUrl] = useState('');
+  const [redirectedUrl, setRedirectedUrl] = useState('');
+  const [analytics, setAnalytics] = useState(0);
 
   const handleSignUp = async () => {
     try {
@@ -41,6 +45,36 @@ const AuthTestComponent = () => {
       console.error('Logout Failed:', error);
     }
   };
+
+  const createShortLink = async () => {
+    try {
+      const response = await axios.post('http://localhost:3001/api/shortlinks/create', { username, originalUrl });
+      console.log('Response:', response);
+      setShortUrl(response.data.shortUrl);
+    } catch (error) {
+      console.error('Error creating short link:', error.message);
+    }
+  };
+
+  const redirectToOriginalUrl = async () => {
+    try {
+      const response = await axios.get(shortUrl);
+      console.log('Redirected URL:', response.request.responseURL);
+      setRedirectedUrl(response.request.responseURL);
+      setAnalytics(analytics + 1);
+    } catch (error) {
+      console.error('Error redirecting to original URL:', error.message);
+    }
+  };
+
+  const viewAnalytics = async () => {
+    try {
+      const response = await axios.get(`${shortUrl}`);
+      console.log('Analytics:', response.data.analytics);
+    } catch (error) {
+      console.error('Error fetching analytics:', error.message);
+    }
+  };
   return (
     <div>
       <h2>Login/Signup Test</h2>
@@ -57,6 +91,25 @@ const AuthTestComponent = () => {
         <button onClick={handleLogin}>Login</button>
         <button onClick={handleLogout}>Logout</button>
       </div>
+      <div>
+      <label>
+        Original URL:
+        <input type="text" value={originalUrl} onChange={(e) => setOriginalUrl(e.target.value)} />
+      </label>
+      <button onClick={createShortLink}>Create Short Link</button>
+
+      {shortUrl && (
+        <div>
+          <p>Short Link: {shortUrl}</p>
+
+          <a href={redirectedUrl || shortUrl} target="_blank" rel="noopener noreferrer">
+            <button onClick={redirectToOriginalUrl}>Redirect to Original URL</button>
+          </a>
+
+          <button onClick={viewAnalytics}>View Analytics</button>
+        </div>
+      )}
+    </div>
     </div>
   );
 };

@@ -1,12 +1,14 @@
 const express = require('express');
+const User = require('../models/user');
 const shortLinkService = require('../services/shortLinkService');
 
 const router = express.Router();
 
 router.post('/create', async (req, res) => {
   try {
-    const { originalUrl } = req.body;
-    const shortLink = await shortLinkService.createShortLink(originalUrl);
+    const { username, originalUrl } = req.body;
+    const user = await User.findOne({ username });
+    const shortLink = await shortLinkService.createShortLink(originalUrl, user);
     const fullShortUrl = `http://localhost:3001/api/shortlinks/${shortLink.shortUrl}`;
     res.json({ shortUrl: fullShortUrl });
   } catch (error) {
