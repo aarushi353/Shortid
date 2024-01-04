@@ -28,11 +28,12 @@ const ShortLinkTester = () => {
       {shortUrl && (
         <div>
           <p>Short Link: {shortUrl}</p>
-          
-          <a href={shortUrl} target="_blank" rel="noopener noreferrer"><button>Redirect to Original URL</button></a>
+
+          <a href={shortUrl} target="_blank" rel="noopener noreferrer">
+            <button>Redirect to Original URL</button>
+          </a>
         </div>
       )}
-
     </div>
   );
 };

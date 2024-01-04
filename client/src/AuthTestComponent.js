@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:3001/auth'; 
+const API_BASE_URL = 'http://localhost:3001/auth';
 
 const AuthTestComponent = () => {
   const [username, setUsername] = useState('');
@@ -22,13 +22,25 @@ const AuthTestComponent = () => {
       if (response.data.message === 'Login successful') {
         console.log('Login Successful');
       } else {
-        console.error('User is not registered');
+        console.error('Invalid credentials');
       }
     } catch (error) {
       console.error('Login Failed');
     }
   };
 
+  const handleLogout = async () => {
+    try {
+      const response = await axios.post(`${API_BASE_URL}/logout`, {username});
+      if (response.data.message === 'Logout successful') {
+        console.log('Logout Successful');
+      } else {
+        console.error('Logout Failed');
+      }
+    } catch (error) {
+      console.error('Logout Failed:', error);
+    }
+  };
   return (
     <div>
       <h2>Login/Signup Test</h2>
@@ -43,6 +55,7 @@ const AuthTestComponent = () => {
       <div>
         <button onClick={handleSignUp}>Signup</button>
         <button onClick={handleLogin}>Login</button>
+        <button onClick={handleLogout}>Logout</button>
       </div>
     </div>
   );

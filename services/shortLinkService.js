@@ -1,15 +1,17 @@
 const shortid = require('shortid');
-const ShortLink = require('../models/shortLinkModel');
 
 class ShortLinkService {
-  async createShortLink(originalUrl) {
+  async createShortLink(originalUrl, user) {
     try {
       const shortUrl = shortid.generate();
-      const newShortLink = new ShortLink({
+      const newShortLink = {
         originalUrl,
         shortUrl,
-      });
-      await newShortLink.save();
+        createdAt: new Date(),
+        analytics: 0,
+      };
+      user.shortenedUrls.push(newShortLink);
+      await user.save();
       return newShortLink;
     } catch (error) {
       console.error('Error creating short link:', error.message);
@@ -20,6 +22,10 @@ class ShortLinkService {
   async getShortLink(shortUrl) {
     try {
       const shortLink = await ShortLink.findOne({ shortUrl });
+      if (shortLink) {
+        shortLink.analytics += 1;
+        await shortLink.save();
+      }
       return shortLink;
     } catch (error) {
       console.error('Error retrieving short link:', error.message);
