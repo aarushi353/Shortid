@@ -10,6 +10,7 @@ const AuthTestComponent = () => {
   const [shortUrl, setShortUrl] = useState('');
   const [redirectedUrl, setRedirectedUrl] = useState('');
   const [analytics, setAnalytics] = useState(0);
+  const [showAnalytics, setShowAnalytics] = useState(false);
 
   const handleSignUp = async () => {
     try {
@@ -56,21 +57,16 @@ const AuthTestComponent = () => {
     }
   };
 
-  const redirectToOriginalUrl = async () => {
-    try {
-      const response = await axios.get(shortUrl);
-      console.log('Redirected URL:', response.request.responseURL);
-      setRedirectedUrl(response.request.responseURL);
-      setAnalytics(analytics + 1);
-    } catch (error) {
-      console.error('Error redirecting to original URL:', error.message);
-    }
-  };
+  const show = () =>{
+    setAnalytics(false);
+  }
 
   const viewAnalytics = async () => {
     try {
-      const response = await axios.get(`${shortUrl}`);
+      const response = await axios.get(`${shortUrl}/analytics`);
       console.log('Analytics:', response.data.analytics);
+      setAnalytics(response.data.analytics);
+      setShowAnalytics(true);
     } catch (error) {
       console.error('Error fetching analytics:', error.message);
     }
@@ -103,10 +99,11 @@ const AuthTestComponent = () => {
           <p>Short Link: {shortUrl}</p>
 
           <a href={redirectedUrl || shortUrl} target="_blank" rel="noopener noreferrer">
-            <button onClick={redirectToOriginalUrl}>Redirect to Original URL</button>
+            <button onClick={show}>Redirect to Original URL</button>
           </a>
 
           <button onClick={viewAnalytics}>View Analytics</button>
+          {showAnalytics && <p>URL Visited Analytics: {analytics} </p>}
         </div>
       )}
     </div>

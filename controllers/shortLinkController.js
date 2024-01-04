@@ -32,4 +32,20 @@ router.get('/:shortUrl', async (req, res) => {
   }
 });
 
+router.get('/:shortUrl/analytics', async (req, res) => {
+  try {
+    const { shortUrl } = req.params;
+    const user = await User.findOne({ 'shortenedUrls.shortUrl': shortUrl });
+
+    if (user) {
+      const userShortLink = user.shortenedUrls.find((link) => link.shortUrl === shortUrl);
+      res.json({ analytics: userShortLink.analytics });
+    } else {
+      res.status(404).json({ error: 'Short link not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 module.exports = router;
