@@ -7,26 +7,35 @@ This application serves the purpose of shortening URLs and provides users with t
 ## Steps to set up the project
 
 ### Client Setup
--Enter the client directory using:
+- Enter the client directory using:
 `cd client`
--Install all the dependencies and packages required to run this project:
+<br />
+- Install all the dependencies and packages required to run this project:
 `npm install`
--To run the client server, run:
+<br />
+- To run the client server, run:
 `npm start`
+<br />
+
+<hr>
 
 ### Backend Setup
--Create a .env file with the following structure and specify the same in the file:
+- Create a .env file with the following structure and specify the same in the file:
 ```
 PORT=
 MONGODB_URI=
 ```
--Install all the dependencies and packages required to run this project:
+<br />
+- Install all the dependencies and packages required to run this project:
 `npm install`
--To start the server, run the command:
+<br />
+- To start the server, run the command:
 `nodemon index.js`
 
+<hr>
+
 ### Technology Stacks Used
--Node
--Express
--React
--MongoDB
+- Node
+- Express
+- React
+- MongoDB
