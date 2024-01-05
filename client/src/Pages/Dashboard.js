@@ -8,6 +8,8 @@ const UrlPage = ({ username, onLogout }) => {
   const [originalUrl, setOriginalUrl] = useState("");
   const [shortUrl, setShortUrl] = useState("");
   const [analytics, setAnalytics] = useState(0);
+  const [createdAt, setCreatedAt] = useState(null);
+  const [expiresAt, setExpiresAt] = useState(null);
   const [showAnalytics, setShowAnalytics] = useState(false);
 
   const createShortLink = async () => {
@@ -23,16 +25,19 @@ const UrlPage = ({ username, onLogout }) => {
     }
   };
 
-  const show = () => {
-    setAnalytics(false);
-  };
-
   const viewAnalytics = async () => {
     try {
       const response = await axios.get(`${shortUrl}/analytics`);
-      console.log("Analytics:", response.data.analytics);
-      setAnalytics(response.data.analytics);
+      console.log("Analytics:", response.data);
+
+      const { analytics, createdAt, expiresAt } = response.data;
+      setAnalytics(analytics);
+      setCreatedAt(createdAt);
+      setExpiresAt(expiresAt);
       setShowAnalytics(true);
+
+      console.log("CreatedAt:", createdAt);
+      console.log("ExpiresAt:", expiresAt);
     } catch (error) {
       console.error("Error fetching analytics:", error.message);
     }
@@ -73,10 +78,16 @@ const UrlPage = ({ username, onLogout }) => {
                   {shortUrl}
                 </a>
               </p>
+              {showAnalytics && (
+                <div>
+                  <p>Number of Visits (Analytics): {analytics}</p>
+                  <p>Created At: {createdAt}</p>
+                  <p>Expires At: {expiresAt}</p>
+                </div>
+              )}
               <div className="buttons">
                 <button onClick={viewAnalytics}>View Analytics</button>
               </div>
-              {showAnalytics && <p>URL Visited Analytics: {analytics}</p>}
             </div>
           )}
         </div>

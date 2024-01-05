@@ -6,10 +6,12 @@ class ShortLinkService {
   async createShortLink(originalUrl, user) {
     try {
       const shortUrl = shortid.generate();
+      const expiresAt = new Date(Date.now() + 48 * 60 * 60 * 1000);
       const newShortLink = {
         originalUrl,
         shortUrl,
         createdAt: new Date(),
+        expiresAt,
         analytics: 0,
       };
 
