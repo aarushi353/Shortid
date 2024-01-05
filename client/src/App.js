@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import AuthPage from './components/AuthPage';
-import UrlPage from './components/UrlPage';
-import './App.css';
+import AuthPage from './Pages/Auth';
+import UrlPage from './Pages/Dashboard';
+import './assets/css/App.css';
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
