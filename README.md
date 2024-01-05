@@ -9,13 +9,10 @@ This application serves the purpose of shortening URLs and provides users with t
 ### Client Setup
 - Enter the client directory using:
 `cd client`
-<br />
 - Install all the dependencies and packages required to run this project:
 `npm install`
-<br />
 - To run the client server, run:
 `npm start`
-<br />
 
 <hr>
 
@@ -25,10 +22,8 @@ This application serves the purpose of shortening URLs and provides users with t
 PORT=
 MONGODB_URI=
 ```
-<br />
 - Install all the dependencies and packages required to run this project:
 `npm install`
-<br />
 - To start the server, run the command:
 `nodemon index.js`
 
