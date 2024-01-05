@@ -1,20 +1,19 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:3001/auth';
+const API_BASE_URL = 'http://localhost:3001';
 
-const AuthTestComponent = () => {
+const TestComponent = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [originalUrl, setOriginalUrl] = useState('');
   const [shortUrl, setShortUrl] = useState('');
-  const [redirectedUrl, setRedirectedUrl] = useState('');
   const [analytics, setAnalytics] = useState(0);
   const [showAnalytics, setShowAnalytics] = useState(false);
 
   const handleSignUp = async () => {
     try {
-      const response = await axios.post(`${API_BASE_URL}/signup`, { username, password });
+      const response = await axios.post(`${API_BASE_URL}/auth/signup`, { username, password });
       console.log('User Registered Successful');
     } catch (error) {
       console.error('User already exists');
@@ -23,7 +22,7 @@ const AuthTestComponent = () => {
 
   const handleLogin = async () => {
     try {
-      const response = await axios.post(`${API_BASE_URL}/login`, { username, password });
+      const response = await axios.post(`${API_BASE_URL}/auth/login`, { username, password });
       if (response.data.message === 'Login successful') {
         console.log('Login Successful');
       } else {
@@ -36,7 +35,7 @@ const AuthTestComponent = () => {
 
   const handleLogout = async () => {
     try {
-      const response = await axios.post(`${API_BASE_URL}/logout`, {username});
+      const response = await axios.post(`${API_BASE_URL}/auth/logout`, {username});
       if (response.data.message === 'Logout successful') {
         console.log('Logout Successful');
       } else {
@@ -49,7 +48,7 @@ const AuthTestComponent = () => {
 
   const createShortLink = async () => {
     try {
-      const response = await axios.post('http://localhost:3001/api/shortlinks/create', { username, originalUrl });
+      const response = await axios.post(`${API_BASE_URL}/api/shortlinks/create`, { username, originalUrl });
       console.log('Response:', response);
       setShortUrl(response.data.shortUrl);
     } catch (error) {
@@ -98,7 +97,7 @@ const AuthTestComponent = () => {
         <div>
           <p>Short Link: {shortUrl}</p>
 
-          <a href={redirectedUrl || shortUrl} target="_blank" rel="noopener noreferrer">
+          <a href={shortUrl} target="_blank" rel="noopener noreferrer">
             <button onClick={show}>Redirect to Original URL</button>
           </a>
 
@@ -111,4 +110,4 @@ const AuthTestComponent = () => {
   );
 };
 
-export default AuthTestComponent;
+export default TestComponent;
