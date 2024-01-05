@@ -10,6 +10,13 @@ h1 {
     display: flex;
 }
 
+@media screen and (max-width:670px) {
+    .auth{
+        display: flex;
+        flex-direction: column;
+    }
+}
+
 .signup,
 .login {
     width: 50vw;
